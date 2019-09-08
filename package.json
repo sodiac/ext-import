@@ -2,7 +2,7 @@
 	"name": "ext-import",
 	"displayName": "Ext-import",
 	"description": "provides import completion for files with any extension",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"publisher": "sodiac",
 	"icon": "icon.png",
 	"repository": {
