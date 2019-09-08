@@ -21,6 +21,17 @@ You can install it from the [marketplace](https://marketplace.visualstudio.com/i
 
 > default: [".json", ".txt", ".html"]
 
+## Tips
+
+- you need a [name].d.ts file to import the desired extension
+
+```
+declare module "*.json" {
+    const content: any;
+    export default content;
+}
+````
+
 ## Release Notes
 
 ### 1.0.0
