@@ -34,7 +34,7 @@
 						".txt",
 						".html"
 					],
-					"description": "which files are allowed to import",
+					"description": "wich files are allowed to import",
 					"scope": "resource"
 				}
 			}

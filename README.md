@@ -19,6 +19,8 @@ You can install it from the [marketplace](https://marketplace.visualstudio.com/i
 
 .ts and .tsx extensions are still handled by visual studio code
 
+> default: [".json", ".txt", ".html"]
+
 ## Known Issues
 
 Calling out known issues can help limit users opening duplicate issues against your extension.
