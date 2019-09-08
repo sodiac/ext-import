@@ -34,9 +34,13 @@ declare module "*.json" {
 
 ## Release Notes
 
+### 1.0.1
+
+update readme
+
 ### 1.0.0
 
-Initial release
+initial release
 
 ## Author
 marcel armada-castellon
