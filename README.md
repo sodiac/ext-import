@@ -21,13 +21,7 @@ You can install it from the [marketplace](https://marketplace.visualstudio.com/i
 
 > default: [".json", ".txt", ".html"]
 
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
 ## Release Notes
-
-Users appreciate release notes as you update your extension.
 
 ### 1.0.0
 
@@ -39,4 +33,4 @@ marcel armada-castellon
 + [github/sodiac](https://github.com/sodiac)
 
 ## Credits
-This extension is based on [path-complete](https://github.com/ionutvmi/path-autocomplete)
+This extension is based on [path-autocomplete](https://github.com/ionutvmi/path-autocomplete)
