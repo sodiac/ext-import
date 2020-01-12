@@ -6,20 +6,24 @@ provides import completion for files with any extension
 
 ## Features
 
-- it supports items include via the `ext-import.import` option
+- supports items import via the `ext-import.import` option
 
 ## Installation
 
-You can install it from the [marketplace](https://marketplace.visualstudio.com/items?itemName=sodiac.ext-import).
+Install it from the [marketplace](https://marketplace.visualstudio.com/items?itemName=sodiac.ext-import).
 `ext install ext-import`
 
 ## Options
 
-- `ext-import.import` - array this option allows to define wich extensions show in the suggestions
+- `ext-import.import` - [array] allow wich extensions show in the suggestions
 
 .ts and .tsx extensions are still handled by visual studio code
 
 > default: [".json", ".txt", ".html"]
+
+- `ext-import.tsconfig` - [string] path to the tsconfig.json in the current code-workspace
+
+> default: "./tsconfig"
 
 ## Tips
 
@@ -34,13 +38,17 @@ declare module "*.json" {
 
 ## Release Notes
 
+### 1.1.0
+* support baseUrl from tsconfig.json
+* support relative and absolute path
+
 ### 1.0.1
 
-update readme
+* update readme
 
 ### 1.0.0
 
-initial release
+* initial release
 
 ## Author
 marcel armada-castellon
