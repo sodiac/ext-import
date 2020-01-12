@@ -23,7 +23,7 @@ Install it from the [marketplace](https://marketplace.visualstudio.com/items?ite
 
 - `ext-import.tsconfig` - [string] path to the tsconfig.json in the current code-workspace
 
-> default: "./tsconfig"
+> default: "./tsconfig.json"
 
 ## Tips
 
