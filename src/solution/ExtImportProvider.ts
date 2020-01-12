@@ -10,9 +10,12 @@ export default class ExtImportProvider implements vscode.CompletionItem{
     private workspaceFolder : any | null = null;
     private workspaceFolderPath : string | null = null;
     private currentDir : string | null = null;
+    private tsconfigPath : any = null;
+    private  baseUrl : any = null;
 
     public provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken): Thenable<vscode.CompletionItem[]> {
         var that = this;
+        var stat;
 
         this.homeDirectory = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'] || '/';
         this.codeConfiguration = vscode.workspace.getConfiguration('ext-import', document.uri || null);
@@ -20,6 +23,22 @@ export default class ExtImportProvider implements vscode.CompletionItem{
         this.workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri) || (vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0] : null);
         this.workspaceFolderPath = this.workspaceFolder && this.workspaceFolder.uri.fsPath;
         this.currentDir = path.parse(document.fileName).dir || '/';
+        this.tsconfigPath = this.workspaceFolderPath as string;
+
+        if(that.codeConfiguration.tsconfig && this.tsconfigPath && !this.baseUrl){
+            this.tsconfigPath = path.join(this.workspaceFolderPath as string, that.codeConfiguration.tsconfig);
+            stat = fs.statSync(this.tsconfigPath);
+
+            if(stat.isFile()){
+                var res = /\"baseUrl"\s?\:\s?\"(.*)\"/gm.exec(fs.readFileSync(this.tsconfigPath, 'utf8'));
+
+                if(res && res[1]){
+                    this.baseUrl = res[1];
+                }
+            }
+
+            this.tsconfigPath = null;
+        }
 
         return this.GetItems()
         .then((items) => {
@@ -53,16 +72,39 @@ export default class ExtImportProvider implements vscode.CompletionItem{
 
         if(importMatch && importMatch[1]){
             var importItem =  importMatch[1].replace(/\'|\;/g, '');
+            var cleanItem = false;
 
-            if(importMatch[1].startsWith('/')){
-                that.currentDir = that.workspaceFolderPath;
-                importItem = importItem.substring(1);
-            } else if(importMatch[1].startsWith('~')){
-                that.currentDir = that.homeDirectory;
-                importItem = importItem.substring(2);
+            that.currentDir = that.workspaceFolderPath;
+
+            if(that.baseUrl){
+                that.currentDir = path.join(that.workspaceFolderPath as string, that.baseUrl);
             }
 
-            that.currentDir = path.resolve(that.currentDir as string, importItem);
+            if(importMatch[1].startsWith('./') || importMatch[1].startsWith('../')){
+                if(vscode.window.activeTextEditor){
+                    that.currentDir = path.parse(vscode.window.activeTextEditor.document.uri.fsPath).dir;
+                }
+
+                cleanItem = true;
+            } else if(importMatch[1].startsWith('/')){
+                that.currentDir = path.resolve('/');
+                cleanItem = true;
+            } else if(importMatch[1].startsWith('~')){
+                that.currentDir = that.homeDirectory;
+                cleanItem = true;
+            } else if(importMatch[1].match(/^[a-z]:/i)){
+                var res = importItem.split(path.sep);  
+                that.currentDir = res.shift() as string;
+                importItem = res.join(path.sep);
+                cleanItem = true;
+            }
+
+            if(importItem && cleanItem){
+                importItem = importItem.substring(1);
+            }
+
+            that.currentDir = path.join(that.currentDir as string, importItem);
+            vscode.window.showInformationMessage(that.currentDir);
         }
 
         return Promise
@@ -76,7 +118,7 @@ export default class ExtImportProvider implements vscode.CompletionItem{
                     fs.readdir(that.currentDir as string, (err, items) => {
                         if(err){
                             return reject(err);
-                        }
+                        } 
 
                         resolve(items);
                     });
