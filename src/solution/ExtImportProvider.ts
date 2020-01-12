@@ -104,7 +104,6 @@ export default class ExtImportProvider implements vscode.CompletionItem{
             }
 
             that.currentDir = path.join(that.currentDir as string, importItem);
-            vscode.window.showInformationMessage(that.currentDir);
         }
 
         return Promise
